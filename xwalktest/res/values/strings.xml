@@ -1,8 +1,65 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">xwalktest</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="jsapi">
+        var counter = 0;
+        var messageLstener = null;
+        var successCbs = {};
+
+        extension.setMessageListener(function (message) {
+          var data;
+          data = JSON.parse(message);
+          var cb;
+          if(data.native_id!=-2){
+            cb = successCbs[data.native_id];
+          }else{
+            MsgCountQuery();
+          }
+          if (cb) {
+            if(data.isString){
+              cb(data.value);
+            }
+            else{
+              cb(data);
+            }
+            if(data.native_id!=-2)
+              delete successCbs[data.native_id];
+          }
+        });
+
+        exports.send = function(msg,params,callback) {
+          if(callback){
+            counter++;
+            successCbs[counter] = callback;
+          }
+          try{
+            params = JSON.parse(params);
+          }catch(e){}
+          extension.postMessage(JSON.stringify({
+            native_id: counter,
+            msg: msg,
+            params: params
+          }));
+        };
+    </string>
+    <string name="jsapi2">
+        var echoListener = null;  
+        extension.setMessageListener(function(msg) {
+			   if (echoListener instanceof Function) { echoListener(msg);};  
+		});
+		exports.echo = function (msg, callback) { 
+		       echoListener = callback;
+			   extension.postMessage(msg);  
+		};  
+		exports.send = function (msg, callback) { 
+		       echoListener = callback;
+			   extension.postMessage(msg);  
+		};  
+		exports.echoSync = function (msg) {
+			   return extension.internal.sendSyncMessage(msg);  
+		};
+    </string>
 
 </resources>

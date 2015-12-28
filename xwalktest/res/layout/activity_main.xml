@@ -11,7 +11,14 @@
     <org.xwalk.core.XWalkView
         android:id="@+id/test"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="300dp" >
     </org.xwalk.core.XWalkView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:onClick="callJs"
+        android:text="主动调用js" />
 
 </RelativeLayout>

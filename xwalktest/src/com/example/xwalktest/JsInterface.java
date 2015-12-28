@@ -18,6 +18,18 @@ public class JsInterface extends XWalkExtension {
 		this.context = context;
 	}
 
+	private void send(final int id, final String msg) {
+		handler.post(new Runnable() {
+
+			@Override
+			public void run() {
+				Toast.makeText(context, "send" + id + "," + msg, Toast.LENGTH_LONG).show();
+			}
+		});
+
+		postMessage(id, "java 处理后的msg：" + msg);
+	}
+
 	@Override
 	public void onMessage(final int arg0, final String arg1) {
 		// Looper.prepare();
@@ -33,7 +45,7 @@ public class JsInterface extends XWalkExtension {
 			}
 		});
 
-		postMessage(arg0, "from java" + arg1);
+		postMessage(arg0, arg1);
 	}
 
 	@Override

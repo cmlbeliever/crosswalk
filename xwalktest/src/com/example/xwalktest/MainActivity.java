@@ -14,26 +14,27 @@ import org.xwalk.core.internal.XWalkViewBridge;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.widget.Toast;
 
 public class MainActivity extends XWalkActivity {
 
-	private static String jsApi = "var echoListener = null;" + "extension.setMessageListener(function(msg) {"
-			+ "  if (echoListener instanceof Function) {" + "    echoListener(msg);" + "  };" + "});"
-			+ "exports.echo = function (msg, callback) {" + "  echoListener = callback;"
-			+ "  extension.postMessage(msg);" + "};" + "exports.echoSync = function (msg) {"
-			+ "  return extension.internal.sendSyncMessage(msg);" + "};";
-
 	private XWalkView view;
-	private static String name = "echo";
+	private static String name = "nativeApp";
+	private JsInterface js;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		new JsInterface(this, name, jsApi);
+		js = new JsInterface(this, name, getString(R.string.jsapi));
 		view = (XWalkView) findViewById(R.id.test);
+	}
+
+	public void callJs(View v) {
+//		js.postMessage(100, "java主动调用");
+		view.load("javascript:show()", null);
 	}
 
 	@Override
@@ -78,9 +79,8 @@ public class MainActivity extends XWalkActivity {
 				super.onLoadStarted(view, url);
 			}
 		});
-		
-		XWalkAutofillClient client=XWalkAutofillClient.create(1);
-		
+
+		XWalkAutofillClient client = XWalkAutofillClient.create(1);
 
 		view.setUIClient(new XWalkUIClient(view) {
 			@Override

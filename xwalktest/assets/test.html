@@ -5,7 +5,14 @@
 <title>Insert title here</title>
 <script type="text/javascript">
 	function test() {
-		echo.echo("test",function(msg){
+		nativeApp.echo("test",function(msg){
+			alert("msg is :"+msg);
+		})
+	}
+	function test2() {
+		nativeApp.send("msg",JSON.stringify({
+			"name":"kangkang"
+          }),function(msg){
 			alert("msg is :"+msg);
 		})
 	}
@@ -15,6 +22,7 @@
 </script>
 </head>
 <body>
-	<button onclick="test()">我是一个按钮啊</button>
+	<button onclick="test()">我是一个按钮啊</button><br/><br/><br/><br/>
+	<button onclick="test2()">我是一个按钮啊2</button>
 </body>
 </html>
