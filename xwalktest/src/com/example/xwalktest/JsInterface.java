@@ -47,6 +47,32 @@ public class JsInterface extends XWalkExtension {
 
 		postMessage(arg0, arg1);
 	}
+	
+	@Override
+	public void onInstanceCreated(final int instanceID) {
+		super.onInstanceCreated(instanceID);
+		handler.post(new Runnable() {
+
+			@Override
+			public void run() {
+				Toast.makeText(context, "onInstanceCreated" +instanceID, Toast.LENGTH_LONG).show();
+			}
+		});
+
+	}
+	
+	@Override
+	public void onInstanceDestroyed(final int instanceID) {
+		super.onInstanceDestroyed(instanceID);
+		handler.post(new Runnable() {
+
+			@Override
+			public void run() {
+				Toast.makeText(context, "onInstanceDestroyed" +instanceID, Toast.LENGTH_LONG).show();
+			}
+		});
+
+	}
 
 	@Override
 	public String onSyncMessage(int arg0, String arg1) {

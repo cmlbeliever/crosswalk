@@ -29,12 +29,13 @@ public class MainActivity extends XWalkActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		js = new JsInterface(this, name, getString(R.string.jsapi));
+		new NewJsInterface(this, "testApp", getString(R.string.jsapi_new));
 		view = (XWalkView) findViewById(R.id.test);
 	}
 
 	public void callJs(View v) {
-//		js.postMessage(100, "java主动调用");
 		view.load("javascript:show()", null);
+		startActivity(new Intent(this, MainActivity.class));
 	}
 
 	@Override

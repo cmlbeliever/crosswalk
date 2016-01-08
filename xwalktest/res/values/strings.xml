@@ -38,7 +38,38 @@
             params = JSON.parse(params);
           }catch(e){}
           extension.postMessage(JSON.stringify({
-            native_id: counter,
+            msg: msg,
+            params: params
+          }));
+        };
+    </string>
+    <string name="jsapi_new">
+        var counter = 0;
+        var messageLstener = null;
+        var successCbs = {};
+
+        extension.setMessageListener(function (message) {
+          var data = JSON.parse(message);
+          var cb = successCbs[data.native_id];
+          if (cb) {
+            if(data.isString){
+              cb(data.value);
+            }else{
+              cb(data);
+            }
+          delete successCbs[data.native_id];
+          }
+        });
+
+        exports.newSend = function(msg,params,callback) {
+          if(callback){
+            counter++;
+            successCbs[counter] = callback;
+          }
+          try{
+            params = JSON.parse(params);
+          }catch(e){}
+          extension.postMessage(JSON.stringify({
             msg: msg,
             params: params
           }));
